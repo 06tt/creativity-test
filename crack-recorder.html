@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>創作裂縫記錄器</title>
+<style>
+body{
+  margin:0;
+  background:linear-gradient(160deg,#0b1020,#111827);
+  color:#e5e7eb;
+  font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC";
+}
+header{
+  text-align:center;
+  padding:28px 16px;
+}
+header h1{
+  margin:0;
+  font-size:28px;
+}
+header p{
+  opacity:.75;
+}
+.app{
+  max-width:720px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:rgba(255,255,255,.05);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:18px;
+}
+label{
+  display:block;
+  margin-bottom:8px;
+  opacity:.8;
+}
+select,textarea{
+  width:100%;
+  border-radius:12px;
+  border:none;
+  padding:12px;
+  margin-bottom:16px;
+  background:#0f172a;
+  color:#e5e7eb;
+}
+textarea{
+  height:90px;
+  resize:none;
+}
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:14px;
+  background:#7dd3fc;
+  color:#020617;
+  font-size:16px;
+  cursor:pointer;
+}
+.response{
+  margin-top:16px;
+  padding:16px;
+  background:#020617;
+  border-left:4px solid #7dd3fc;
+  border-radius:12px;
+  display:none;
+}
+footer{
+  text-align:center;
+  opacity:.4;
+  padding:16px;
+  font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>創作裂縫記錄器</h1>
+  <p>這不是診斷，只是一個留下來的地方</p>
+</header>
+
+<div class="app">
+
+  <div class="card">
+    <label>你現在卡在哪裡？</label>
+    <select id="stage">
+      <option>剛開始，完全不知道怎麼下筆</option>
+      <option>做到一半，開始懷疑是不是做錯了</option>
+      <option>快完成了，但總覺得哪裡不對</option>
+    </select>
+
+    <label>這個裂縫出現在什麼位置？</label>
+    <select id="place">
+      <option>開始之前</option>
+      <option>過程中</option>
+      <option>快完成時</option>
+    </select>
+
+    <label>有一句你現在不太敢說出口的話嗎？</label>
+    <textarea id="truth" placeholder="例如：我是不是根本不適合做這個…"></textarea>
+
+    <button onclick="respond()">留下這個裂縫</button>
+
+    <div class="response" id="response"></div>
+  </div>
+
+</div>
+
+<footer>
+  G4460 數位自造者｜裂縫不是錯，是入口
+</footer>
+
+<script>
+function respond(){
+  const replies=[
+    "你不是停下來了，你只是站在一個需要被聽見的地方。",
+    "這個裂縫沒有要你跨過去，它只是想被承認。",
+    "不是所有進展都看得見，有些是在裡面發生的。",
+    "你還願意留下來，這件事本身就很重要。",
+    "如果你現在什麼都不改，也沒有做錯任何事。"
+  ];
+  const r=document.getElementById("response");
+  r.innerText=replies[Math.floor(Math.random()*replies.length)];
+  r.style.display="block";
+}
+</script>
+
+</body>
+</html>
