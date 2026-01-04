@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>創意等級測驗｜Lv.0–Lv.7</title>
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#0a1a2f;
+      --card:rgba(255,255,255,.08);
+      --card2:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.68);
+      --brand:#7c5cff;
+      --brand2:#38d9ff;
+      --ok:#5cffb2;
+      --warn:#ffcc66;
+      --danger:#ff6b6b;
+      --shadow: 0 16px 50px rgba(0,0,0,.45);
+      --radius:22px;
+      --radius2:16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background: radial-gradient(1200px 700px at 20% 0%, rgba(124,92,255,.18), transparent 60%),
+                  radial-gradient(1000px 650px at 90% 10%, rgba(56,217,255,.14), transparent 55%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    a{ color:inherit; }
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 18px 42px;
+    }
+    header{
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+    .title{
+      display:flex; gap:14px; align-items:center;
+    }
+    .badge{
+      width:52px; height:52px; border-radius:16px;
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(56,217,255,.85));
+      display:grid; place-items:center;
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .badge span{
+      font-family:var(--mono);
+      font-weight:800;
+      font-size:16px;
+      letter-spacing:.5px;
+    }
+    h1{
+      margin:0;
+      font-size:22px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.4;
+      max-width:720px;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    button{
+      appearance:none;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:14px;
+      padding:10px 12px;
+      cursor:pointer;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      font-weight:650;
+      letter-spacing:.2px;
+    }
+    button:hover{ background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.18); }
+    button:active{ transform: translateY(1px) scale(.99); }
+    button.primary{
+      border-color: rgba(124,92,255,.45);
+      background: linear-gradient(135deg, rgba(124,92,255,.92), rgba(56,217,255,.72));
+      color:#071226;
+      box-shadow: 0 12px 30px rgba(124,92,255,.25);
+    }
+    button.primary:hover{ filter:brightness(1.03); }
+    button.ghost{
+      background: transparent;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+      align-items:start;
+    }
+    @media (max-width: 920px){
+      .grid{ grid-template-columns:1fr; }
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.06));
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .panel{
+      padding:18px 18px 16px;
+    }
+    .panel h2{
+      margin:0 0 10px;
+      font-size:16px;
+      color:rgba(255,255,255,.86);
+      letter-spacing:.2px;
+    }
+
+    .progress{
+      padding:16px 18px;
+      border-top:1px solid var(--stroke);
+      background: rgba(0,0,0,.12);
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+    }
+    .bar{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(124,92,255,.95), rgba(56,217,255,.85));
+      transition: width .35s ease;
+    }
+    .step{
+      font-family:var(--mono);
+      color:rgba(255,255,255,.70);
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .qmeta{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:rgba(255,255,255,.80);
+      font-size:12px;
+    }
+    .pill b{
+      color:rgba(255,255,255,.92);
+      font-family:var(--mono);
+      font-weight:800;
+    }
+
+    .question{
+      margin:8px 0 12px;
+      font-size:18px;
+      line-height:1.42;
+      letter-spacing:.2px;
+    }
+    .choices{
+      display:grid;
+      gap:10px;
+      margin-top:10px;
+    }
+    .choice{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:12px 12px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      cursor:pointer;
+      transition: background .18s ease, transform .08s ease, border-color .18s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .choice:hover{
+      background: rgba(255,255,255,.09);
+      border-color: rgba(255,255,255,.20);
+    }
+    .choice:active{ transform: translateY(1px); }
+    .dot{
+      width:18px; height:18px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.30);
+      margin-top:2px;
+      flex:0 0 18px;
+      display:grid; place-items:center;
+    }
+    .dot::after{
+      content:"";
+      width:10px; height:10px;
+      border-radius:50%;
+      background: transparent;
+      transition: background .16s ease;
+    }
+    .choice.selected{
+      border-color: rgba(56,217,255,.55);
+      background: rgba(56,217,255,.10);
+    }
+    .choice.selected .dot{
+      border-color: rgba(56,217,255,.75);
+    }
+    .choice.selected .dot::after{
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(56,217,255,.85));
+    }
+    .choice .text{
+      color:rgba(255,255,255,.90);
+      font-size:14.5px;
+      line-height:1.45;
+    }
+    .choice .hint{
+      display:block;
+      color:rgba(255,255,255,.62);
+      font-size:12.5px;
+      margin-top:4px;
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:14px;
+    }
+    .nav .left{ display:flex; gap:10px; }
+    .tiny{
+      font-size:12.5px;
+      color:rgba(255,255,255,.68);
+    }
+
+    /* Sidebar role cards */
+    .side{
+      padding:18px;
+    }
+    .side h3{
+      margin:0 0 10px;
+      font-size:14px;
+      color:rgba(255,255,255,.80);
+      letter-spacing:.2px;
+    }
+    .roles{
+      display:grid;
+      gap:10px;
+    }
+    .role{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius: 18px;
+      padding:12px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      transition: border-color .2s ease, background .2s ease, transform .08s ease;
+    }
+    .role:hover{
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.18);
+    }
+    .role strong{
+      display:block;
+      font-size:13.5px;
+      margin-bottom:4px;
+    }
+    .role p{
+      margin:0;
+      font-size:12.5px;
+      color:rgba(255,255,255,.66);
+      line-height:1.45;
+    }
+    .sig{
+      width:36px; height:36px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      display:grid; place-items:center;
+      font-family:var(--mono);
+      font-weight:800;
+      color:rgba(255,255,255,.76);
+      flex:0 0 36px;
+    }
+    .role.active{
+      border-color: rgba(124,92,255,.55);
+      background: rgba(124,92,255,.10);
+    }
+    .role.active .sig{
+      border-color: rgba(56,217,255,.55);
+      color:#0a1a2f;
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(56,217,255,.85));
+    }
+
+    /* Result */
+    .result{
+      padding:18px;
+      display:none;
+    }
+    .result.show{ display:block; }
+    .result-grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+    }
+    @media (max-width: 920px){
+      .result-grid{ grid-template-columns:1fr; }
+    }
+    .bigLevel{
+      display:flex; gap:14px; align-items:center;
+      padding:16px;
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+    }
+    .lvl{
+      width:76px; height:76px;
+      border-radius:22px;
+      display:grid; place-items:center;
+      background: linear-gradient(135deg, rgba(124,92,255,.92), rgba(56,217,255,.72));
+      color:#071226;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow: 0 18px 40px rgba(124,92,255,.22);
+      font-family:var(--mono);
+      font-weight:900;
+      font-size:18px;
+    }
+    .bigLevel h4{
+      margin:0;
+      font-size:16px;
+    }
+    .bigLevel .desc{
+      margin:6px 0 0;
+      color:rgba(255,255,255,.70);
+      font-size:13.5px;
+      line-height:1.45;
+    }
+    .chips{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.14);
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12.5px;
+      color:rgba(255,255,255,.78);
+    }
+    .chip b{ color:rgba(255,255,255,.92); font-family:var(--mono); }
+    .box{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      border-radius: 22px;
+      padding:14px;
+    }
+    .box h5{
+      margin:0 0 8px;
+      font-size:13.5px;
+      color:rgba(255,255,255,.82);
+    }
+    .box p{
+      margin:0;
+      color:rgba(255,255,255,.70);
+      font-size:13.5px;
+      line-height:1.55;
+    }
+
+    .footer-note{
+      margin-top:14px;
+      color:rgba(255,255,255,.55);
+      font-size:12.5px;
+      line-height:1.45;
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background: rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
+      padding:10px 12px;
+      border-radius: 14px;
+      color:rgba(255,255,255,.86);
+      font-size:13px;
+      display:none;
+      box-shadow: var(--shadow);
+      max-width:min(560px, calc(100vw - 32px));
+    }
+    .toast.show{ display:block; animation: pop .18s ease; }
+    @keyframes pop{ from{ transform:translateX(-50%) translateY(6px); opacity:.2;} to{transform:translateX(-50%) translateY(0); opacity:1;} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <div class="badge" aria-hidden="true"><span>Lv?</span></div>
+        <div>
+          <h1>創意等級測驗｜七個角色的鏡子</h1>
+          <p class="sub">
+            7 題、每題 3–4 選項。你不需要「答對」——只要照著直覺選。最後會得到：<b>創意等級 Lv.0–Lv.7</b>、你的創意特質，以及最適合召喚的 AI 角色。
+          </p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="ghost" id="btnRandom" title="幫你用直覺快速選一輪">我很迷惘，隨機一下</button>
+        <button class="primary" id="btnStart">開始測驗</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Main -->
+      <section class="card" aria-label="測驗主區">
+        <div class="panel" id="quizPanel">
+          <div class="qmeta">
+            <span class="pill">目前角色：<b id="roleNow">—</b></span>
+            <span class="pill">提示：<b id="roleHint">—</b></span>
+          </div>
+
+          <div class="question" id="qText">按「開始測驗」後，題目會出現在這裡。</div>
+
+          <div class="choices" id="choices" aria-live="polite"></div>
+
+          <div class="nav">
+            <div class="left">
+              <button id="btnPrev">上一題</button>
+              <button id="btnNext" class="primary">下一題</button>
+            </div>
+            <div class="tiny" id="tinyStatus">—</div>
+          </div>
+        </div>
+
+        <div class="progress" aria-label="進度">
+          <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+          <div class="step"><span id="stepText">0 / 7</span></div>
+        </div>
+
+        <!-- Result -->
+        <div class="result" id="resultPanel" aria-label="結果">
+          <div class="result-grid">
+            <div class="bigLevel">
+              <div class="lvl" id="lvlBox">Lv.0</div>
+              <div>
+                <h4 id="lvlTitle">你的創意等級：Lv.0</h4>
+                <p class="desc" id="lvlDesc">—</p>
+                <div class="chips" id="chips"></div>
+              </div>
+            </div>
+
+            <div class="box">
+              <h5>建議召喚角色</h5>
+              <p id="summon">—</p>
+              <div style="height:10px"></div>
+              <h5>一句給你的話</h5>
+              <p id="line">—</p>
+            </div>
+
+            <div class="box" style="grid-column: 1 / -1;">
+              <h5>你的創意特質（摘要）</h5>
+              <p id="trait">—</p>
+              <p class="footer-note">
+                小提醒：這不是心理測驗診斷，只是一個「把你此刻的創作習慣翻譯成語言」的小儀式。
+              </p>
+              <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+                <button id="btnRestart">重新測一次</button>
+                <button id="btnReview" class="ghost">回看我選了什麼</button>
+                <button id="btnCopy" class="primary">複製結果文字</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="card" aria-label="七個角色卡片">
+        <div class="side">
+          <h3>七個 AI 角色（每題對應一位）</h3>
+          <div class="roles" id="roleList"></div>
+          <div style="height:10px"></div>
+          <div class="tiny">
+            💡 玩法：你會依序走過 7 個角色的視角。你不需要變成他們，你只是在借他們的眼睛看自己。
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+/**
+ * 單檔 App：創意等級測驗
+ * Lv.0–Lv.7：7 題加總 0–7 分
+ * 另外統計各「創意向度」tag，來生成特質與推薦召喚角色
+ */
+
+const ROLES = [
+  {
+    id:"time",
+    name:"時間魔法師",
+    sig:"T",
+    hint:"節奏 / 停頓 / 速度感",
+    desc:"擅長用「快與慢」塑形，讓作品有呼吸。",
+    tag:"time"
+  },
+  {
+    id:"poet",
+    name:"詩人工程師",
+    sig:"P",
+    hint:"結構 / 比例 / 優雅",
+    desc:"相信美感可以被設計，擅長把混亂整理成韻律。",
+    tag:"structure"
+  },
+  {
+    id:"physics",
+    name:"瘋狂物理家",
+    sig:"Φ",
+    hint:"規律 / 實驗 / 推演",
+    desc:"遇到任何現象都想算一算：重力、摩擦、角度、誤差。",
+    tag:"physics"
+  },
+  {
+    id:"chaos",
+    name:"混亂美學家",
+    sig:"C",
+    hint:"意外 / 破格 / 驚喜",
+    desc:"覺得最美的瞬間常來自失控，擅長把事故變亮點。",
+    tag:"chaos"
+  },
+  {
+    id:"game",
+    name:"玩樂遊戲大師",
+    sig:"G",
+    hint:"互動 / 體驗 / 爽感",
+    desc:"把一切都當成關卡設計：玩家感受最重要。",
+    tag:"play"
+  },
+  {
+    id:"alien",
+    name:"外星球道具專家",
+    sig:"A",
+    hint:"陌生化 / 視角翻轉",
+    desc:"來自不同重力的想像，最愛質疑我們的「常識」。",
+    tag:"novelty"
+  },
+  {
+    id:"minimal",
+    name:"極簡哲學家",
+    sig:"M",
+    hint:"刪去 / 留白 / 本質",
+    desc:"追求『少即是多』：用最少元素說最大件事。",
+    tag:"minimal"
+  }
+];
+
+// 7題，每題對應一位角色；每題選項給分 0–1（總分0–7）
+// 並給 tags 分數（用來分析特質 & 推薦召喚角色）
+const QUESTIONS = [
+  {
+    roleId:"time",
+    q:"如果你的作品是一段路，你最在意的是哪個瞬間？",
+    choices:[
+      {t:"球（或視線）突然加速的那一下", hint:"快是力量，也是一種勇氣。", pts:1, tags:{time:2, play:1}},
+      {t:"停住、卡住、差點過不去的那一秒", hint:"你願意把脆弱留下來。", pts:1, tags:{time:2, minimal:1}},
+      {t:"整段都平均順順走完，不要出事", hint:"安全感先，創意慢慢來。", pts:0, tags:{structure:1, physics:1}},
+      {t:"我其實不確定，我只想先看別人怎麼做", hint:"觀察也是創作的一部分。", pts:0, tags:{novelty:1}}
+    ]
+  },
+  {
+    roleId:"poet",
+    q:"當你要把想法做成『看得懂』的形式，你通常怎麼開始？",
+    choices:[
+      {t:"先畫草圖，把比例、位置先定下來", hint:"你在找一個優雅的骨架。", pts:1, tags:{structure:2, minimal:1}},
+      {t:"先寫一句話，讓作品有核心語氣", hint:"你用語言定位情緒。", pts:1, tags:{structure:1, time:1}},
+      {t:"先做一個小樣，邊做邊修", hint:"你相信手感會帶路。", pts:1, tags:{play:1, chaos:1}},
+      {t:"我會拖到很後面才開始", hint:"你需要更大的安全感才敢動手。", pts:0, tags:{minimal:1}}
+    ]
+  },
+  {
+    roleId:"physics",
+    q:"遇到球滾不動 / 結構不穩，你第一反應是？",
+    choices:[
+      {t:"調角度、摩擦、重量，一次只改一個變因", hint:"你天生是實驗派。", pts:1, tags:{physics:2, structure:1}},
+      {t:"先暴力重做，反正重來比較快", hint:"你相信行動能解決焦慮。", pts:1, tags:{play:1, chaos:1}},
+      {t:"先問同學：你那邊怎麼解？", hint:"你擅長把協作當捷徑。", pts:1, tags:{play:1, novelty:1}},
+      {t:"先怪自己：是不是我不適合做這個？", hint:"你很在意『我夠不夠好』。", pts:0, tags:{minimal:1}}
+    ]
+  },
+  {
+    roleId:"chaos",
+    q:"作品出現『意外』：歪了、皺了、黏錯了…你更可能？",
+    choices:[
+      {t:"留下它，讓意外變成故事的一部分", hint:"你有把失控變魅力的天賦。", pts:1, tags:{chaos:2, novelty:1}},
+      {t:"立刻修到看不出來，越乾淨越好", hint:"你追求掌控與完成度。", pts:1, tags:{structure:2}},
+      {t:"拍照存證，回去分析原因", hint:"你把情緒先收起來做研究。", pts:1, tags:{physics:2}},
+      {t:"我會卡住很久，不知道要不要重來", hint:"你在意每一步是不是正確。", pts:0, tags:{time:1}}
+    ]
+  },
+  {
+    roleId:"game",
+    q:"如果要讓別人『想玩』你的作品，你最想加什麼？",
+    choices:[
+      {t:"明確目標＋回饋（成功/失敗、分數、音效）", hint:"你超懂互動的爽感。", pts:1, tags:{play:2, structure:1}},
+      {t:"彩蛋與驚喜（走到某處會突然變化）", hint:"你會讓人忍不住再試一次。", pts:1, tags:{play:1, chaos:1}},
+      {t:"很直覺的導引，不用說明也會", hint:"你重視使用者體驗。", pts:1, tags:{minimal:1, play:1}},
+      {t:"我不太想讓別人碰，我想它安靜被看見", hint:"你在找自己的步調。", pts:0, tags:{minimal:2}}
+    ]
+  },
+  {
+    roleId:"alien",
+    q:"如果外星人來看你的作品，他會覺得最『奇怪又有趣』的是？",
+    choices:[
+      {t:"我們居然相信『重力一定往下』", hint:"你擅長翻轉常識。", pts:1, tags:{novelty:2, physics:1}},
+      {t:"我們用紙、膠帶做世界，卻很認真", hint:"你看得見材料的詩意。", pts:1, tags:{structure:1, poet:1, novelty:1}},
+      {t:"我們一直想要『完美』，但其實最美在裂縫", hint:"你敏感且誠實。", pts:1, tags:{chaos:1, time:1, novelty:1}},
+      {t:"我不知道，我只想趕快交作業", hint:"你現在需要的是喘口氣。", pts:0, tags:{minimal:1}}
+    ]
+  },
+  {
+    roleId:"minimal",
+    q:"最後收尾時，你更想做哪一種選擇？",
+    choices:[
+      {t:"刪掉 30% 的裝飾，只留下最必要的線索", hint:"你相信留白會說話。", pts:1, tags:{minimal:2, structure:1}},
+      {t:"加一個關鍵亮點（燈光/徽章/聲音）讓它被記得", hint:"你想讓作品有一個『記憶點』。", pts:1, tags:{time:1, play:1}},
+      {t:"把它做更大、更滿、更複雜", hint:"你用能量推動創作。", pts:1, tags:{chaos:1, play:1}},
+      {t:"維持現狀，不再動它，怕越改越糟", hint:"你正在保護現在的成果。", pts:0, tags:{structure:1}}
+    ]
+  }
+];
+
+// UI elements
+const btnStart = document.getElementById("btnStart");
+const btnRandom = document.getElementById("btnRandom");
+const btnPrev = document.getElementById("btnPrev");
+const btnNext = document.getElementById("btnNext");
+const qText = document.getElementById("qText");
+const choicesEl = document.getElementById("choices");
+const barFill = document.getElementById("barFill");
+const stepText = document.getElementById("stepText");
+const roleNow = document.getElementById("roleNow");
+const roleHint = document.getElementById("roleHint");
+const tinyStatus = document.getElementById("tinyStatus");
+const roleList = document.getElementById("roleList");
+
+const quizPanel = document.getElementById("quizPanel");
+const resultPanel = document.getElementById("resultPanel");
+
+const lvlBox = document.getElementById("lvlBox");
+const lvlTitle = document.getElementById("lvlTitle");
+const lvlDesc = document.getElementById("lvlDesc");
+const chips = document.getElementById("chips");
+const trait = document.getElementById("trait");
+const summon = document.getElementById("summon");
+const line = document.getElementById("line");
+
+const btnRestart = document.getElementById("btnRestart");
+const btnReview = document.getElementById("btnReview");
+const btnCopy = document.getElementById("btnCopy");
+
+const toast = document.getElementById("toast");
+
+// State
+let started = false;
+let idx = 0;
+let answers = Array(QUESTIONS.length).fill(null); // store choice index
+let tagScore = {}; // computed on submit
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>toast.classList.remove("show"), 1800);
+}
+
+function getRole(roleId){ return ROLES.find(r=>r.id===roleId); }
+
+function renderRoleList(activeRoleId){
+  roleList.innerHTML = "";
+  ROLES.forEach(r=>{
+    const div = document.createElement("div");
+    div.className = "role" + (r.id===activeRoleId ? " active" : "");
+    div.innerHTML = `
+      <div class="sig">${r.sig}</div>
+      <div>
+        <strong>${r.name}</strong>
+        <p>擅長：${r.hint}<br><span style="color:rgba(255,255,255,.55)">${r.desc}</span></p>
+      </div>
+    `;
+    roleList.appendChild(div);
+  });
+}
+
+function progress(){
+  const done = answers.filter(v=>v!==null).length;
+  stepText.textContent = `${Math.min(idx+1,7)} / 7`;
+  barFill.style.width = `${(done/QUESTIONS.length)*100}%`;
+  tinyStatus.textContent = done===QUESTIONS.length ? "已完成全部題目，可直接看結果" : `已回答：${done} / ${QUESTIONS.length}`;
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[idx];
+  const role = getRole(q.roleId);
+  roleNow.textContent = role.name;
+  roleHint.textContent = role.hint;
+  renderRoleList(q.roleId);
+
+  qText.textContent = `Q${idx+1}. ${q.q}`;
+  choicesEl.innerHTML = "";
+
+  q.choices.forEach((c, ci)=>{
+    const d = document.createElement("div");
+    d.className = "choice" + (answers[idx]===ci ? " selected" : "");
+    d.setAttribute("role","button");
+    d.setAttribute("tabindex","0");
+    d.innerHTML = `
+      <div class="dot" aria-hidden="true"></div>
+      <div class="text">
+        ${c.t}
+        <span class="hint">${c.hint}</span>
+      </div>
+    `;
+    d.addEventListener("click", ()=>selectChoice(ci));
+    d.addEventListener("keydown", (e)=>{
+      if(e.key==="Enter" || e.key===" "){
+        e.preventDefault();
+        selectChoice(ci);
+      }
+    });
+    choicesEl.appendChild(d);
+  });
+
+  btnPrev.disabled = idx===0;
+  btnNext.textContent = (idx===QUESTIONS.length-1) ? "看結果" : "下一題";
+  progress();
+}
+
+function selectChoice(ci){
+  answers[idx] = ci;
+  // update selected UI
+  [...choicesEl.children].forEach((el,i)=>el.classList.toggle("selected", i===ci));
+  progress();
+}
+
+function start(){
+  started = true;
+  idx = 0;
+  answers = Array(QUESTIONS.length).fill(null);
+  tagScore = {};
+  resultPanel.classList.remove("show");
+  resultPanel.style.display = "none";
+  quizPanel.style.display = "block";
+  showToast("照直覺選就好。");
+  renderQuestion();
+}
+
+function next(){
+  if(!started){ showToast("先按「開始測驗」"); return; }
+  if(answers[idx]===null){
+    showToast("這題先選一個答案～");
+    return;
+  }
+  if(idx === QUESTIONS.length-1){
+    showResult();
+    return;
+  }
+  idx++;
+  renderQuestion();
+}
+
+function prev(){
+  if(!started) return;
+  if(idx>0){ idx--; renderQuestion(); }
+}
+
+function randomFill(){
+  if(!started){
+    start();
+    // small delay for perceived flow
+    setTimeout(()=>randomFill(), 60);
+    return;
+  }
+  for(let i=0;i<QUESTIONS.length;i++){
+    const count = QUESTIONS[i].choices.length;
+    answers[i] = Math.floor(Math.random()*count);
+  }
+  idx = QUESTIONS.length-1;
+  renderQuestion();
+  showToast("已用直覺（隨機）選完一輪，可直接看結果。");
+}
+
+function compute(){
+  let score = 0;
+  const tags = {
+    time:0, structure:0, physics:0, chaos:0, play:0, novelty:0, minimal:0
+  };
+  for(let i=0;i<QUESTIONS.length;i++){
+    const q = QUESTIONS[i];
+    const ci = answers[i];
+    const choice = q.choices[ci];
+    score += choice.pts;
+    const t = choice.tags || {};
+    Object.keys(t).forEach(k=>{
+      if(tags[k]===undefined) tags[k]=0;
+      tags[k] += t[k];
+    });
+  }
+  // clamp score 0..7
+  score = Math.max(0, Math.min(7, score));
+  return {score, tags};
+}
+
+function levelCopy(score){
+  const map = [
+    {t:"Lv.0｜還在門口", d:"你不是沒創意，你只是還在找安全感。先從『一個小動作』開始就好。"},
+    {t:"Lv.1｜開始願意碰", d:"你願意試，但還怕出錯。把『失敗』改名叫『測試』會更輕鬆。"},
+    {t:"Lv.2｜有感覺了", d:"你開始抓到自己的節奏。別急著漂亮，先讓作品活著。"},
+    {t:"Lv.3｜會轉彎", d:"你能在卡住時想辦法，創意正在變成你的工具。"},
+    {t:"Lv.4｜能對話", d:"你不只做作品，你在跟材料、時間、他人互相回應。"},
+    {t:"Lv.5｜有風格", d:"你開始形成自己的偏好與語氣，別人會認得你的手勢。"},
+    {t:"Lv.6｜能帶動", d:"你能把人拉進來一起玩、一起做。你的創意具有感染力。"},
+    {t:"Lv.7｜像世界在呼吸", d:"你已經能讓作品承載情緒與觀點——不是炫技，而是誠實。"}
+  ];
+  return map[score];
+}
+
+function topTags(tags){
+  // sort by score desc
+  return Object.entries(tags)
+    .sort((a,b)=>b[1]-a[1])
+    .filter(([k,v])=>v>0);
+}
+
+function suggestRole(tags){
+  // map main tag -> role
+  const tagToRoleId = {
+    time:"time",
+    structure:"poet",
+    physics:"physics",
+    chaos:"chaos",
+    play:"game",
+    novelty:"alien",
+    minimal:"minimal"
+  };
+  const tops = topTags(tags);
+  const bestTag = tops.length ? tops[0][0] : "minimal";
+  const roleId = tagToRoleId[bestTag] || "minimal";
+  return getRole(roleId);
+}
+
+function buildTrait(tags){
+  const tops = topTags(tags).slice(0,3);
+  const names = {
+    time:"節奏感", structure:"結構感", physics:"推理感", chaos:"意外感", play:"互動感", novelty:"陌生化", minimal:"留白力"
+  };
+  const parts = tops.map(([k,v])=>`「${names[k]}」`).join("、");
+  const t0 = tops[0]?.[0] || "minimal";
+  const t1 = tops[1]?.[0] || null;
+
+  const sentences = [];
+  sentences.push(`你目前最強的創意肌肉是 ${parts || "「留白力」"}。`);
+
+  const flavor = {
+    time:"你會用『快慢』說故事，擅長在轉換處留下被聽見的瞬間。",
+    structure:"你擅長把混亂收束成可讀的形狀，讓人一眼懂你在意什麼。",
+    physics:"你會用規律和測試保護自己，也讓作品越來越可靠。",
+    chaos:"你願意把意外留下來，並把它變成『只有你做得到』的亮點。",
+    play:"你天生在想『觀眾怎麼感覺』，你的作品很容易讓人想參與。",
+    novelty:"你擅長把熟悉的事變陌生，讓世界重新變有趣。",
+    minimal:"你在學會刪減與留白：不是少做，而是更精準地留下。"
+  };
+  sentences.push(flavor[t0] || flavor.minimal);
+
+  if(t1 && t1!==t0){
+    const combo = {
+      "structure+play":"你同時在意『好懂』與『好玩』，很適合做互動體驗設計。",
+      "physics+time":"你會把節奏拆成可測量的東西，適合做聲音/運動的系統化表達。",
+      "chaos+structure":"你能在失控中找出秩序，做出『看似亂，其實很準』的美。",
+      "minimal+time":"你靠停頓與留白製造張力，作品容易有餘韻。",
+      "novelty+play":"你擅長用反差與驚喜讓人上鉤，特別適合做彩蛋與劇情互動。"
+    };
+    const key = `${t0}+${t1}`;
+    const key2 = `${t1}+${t0}`;
+    sentences.push(combo[key] || combo[key2] || `第二強的向度讓你在「${(t1)}」上更容易爆發。`);
+  }
+
+  return sentences.join(" ");
+}
+
+function buildChips(tags){
+  const names = {
+    time:"節奏", structure:"結構", physics:"推理", chaos:"意外", play:"互動", novelty:"陌生化", minimal:"留白"
+  };
+  chips.innerHTML = "";
+  const tops = topTags(tags).slice(0,4);
+  tops.forEach(([k,v])=>{
+    const span = document.createElement("span");
+    span.className = "chip";
+    span.innerHTML = `${names[k]} <b>${v}</b>`;
+    chips.appendChild(span);
+  });
+  if(!tops.length){
+    const span = document.createElement("span");
+    span.className="chip";
+    span.textContent="（還沒測到明顯偏好）";
+    chips.appendChild(span);
+  }
+}
+
+function buildSummonText(role){
+  const msg = [
+    `我建議你召喚「${role.name}」。`,
+    `因為你在選擇裡一直在追：${role.hint}。`,
+    `當你卡住時，試著用他的口吻問一句：「${rolePrompt(role.id)}」`
+  ].join(" ");
+  return msg;
+}
+
+function rolePrompt(roleId){
+  const prompts = {
+    time:"這裡需要慢一點，還是快一點？我想讓人在哪裡呼吸？",
+    poet:"如果只留一個畫面，我要留下哪個比例與節奏？",
+    physics:"哪個變因最關鍵？我能不能做一個小實驗驗證？",
+    chaos:"我能不能把這個失誤變成亮點？讓意外說話？",
+    game:"玩家在這裡會有什麼感覺？我能給他什麼回饋？",
+    alien:"為什麼我們只這樣想？如果重力相反會怎樣？",
+    minimal:"我可以刪掉哪些多餘的？什麼才是真正必要？"
+  };
+  return prompts[roleId] || prompts.minimal;
+}
+
+function oneLiner(score){
+  const lines = [
+    "你不用準備好才開始，你開始了才會準備好。",
+    "創意不是靈感，是你願意留下來的那一秒。",
+    "你不是不夠好，你只是還在找自己的語氣。",
+    "把『失敗』改名叫『測試』，你會輕很多。",
+    "有些作品不是要被看到，是要被聽見。",
+    "不突出，也不等於不存在。",
+    "世界會記得你最誠實的那個瞬間。",
+    "你已經能讓世界互相照亮了。"
+  ];
+  return lines[Math.min(7, Math.max(0, score))];
+}
+
+function showResult(){
+  // ensure all answered
+  const done = answers.every(v=>v!==null);
+  if(!done){
+    showToast("還有題目沒選完喔～");
+    return;
+  }
+
+  const {score, tags} = compute();
+  tagScore = tags;
+
+  const {t, d} = levelCopy(score);
+  lvlBox.textContent = `Lv.${score}`;
+  lvlTitle.textContent = `你的創意等級：Lv.${score}`;
+  lvlDesc.textContent = d;
+
+  buildChips(tags);
+
+  const r = suggestRole(tags);
+  trait.textContent = buildTrait(tags);
+  summon.textContent = buildSummonText(r);
+  line.textContent = oneLiner(score);
+
+  quizPanel.style.display = "none";
+  resultPanel.style.display = "block";
+  resultPanel.classList.add("show");
+  barFill.style.width = "100%";
+  stepText.textContent = "7 / 7";
+}
+
+function restart(){
+  start();
+}
+
+function review(){
+  // back to quiz view, go to Q1 and keep answers
+  quizPanel.style.display = "block";
+  resultPanel.style.display = "none";
+  resultPanel.classList.remove("show");
+  idx = 0;
+  renderQuestion();
+  showToast("回到題目，左右切換可以看你的選擇。");
+}
+
+function copyResult(){
+  const {score, tags} = compute();
+  const r = suggestRole(tags);
+  const top = topTags(tags).slice(0,3).map(([k,v])=>`${k}:${v}`).join(", ");
+  const text =
+`【創意等級測驗結果】
+等級：Lv.${score}
+特質：${buildTrait(tags)}
+建議召喚：${r.name}（擅長：${r.hint}）
+一句話：${oneLiner(score)}
+向度分數：${top}`;
+  navigator.clipboard.writeText(text).then(()=>{
+    showToast("已複製！可以貼到你的多媒體小說/封底。");
+  }).catch(()=>{
+    showToast("複製失敗：你的瀏覽器可能不允許剪貼簿。");
+  });
+}
+
+// Wire buttons
+btnStart.addEventListener("click", start);
+btnRandom.addEventListener("click", randomFill);
+btnPrev.addEventListener("click", prev);
+btnNext.addEventListener("click", next);
+btnRestart.addEventListener("click", restart);
+btnReview.addEventListener("click", review);
+btnCopy.addEventListener("click", copyResult);
+
+// Initial render (role list only)
+renderRoleList(null);
+progress();
+</script>
+</body>
+</html>
