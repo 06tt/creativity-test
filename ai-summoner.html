@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>七個 AI 角色召喚器</title>
+<style>
+:root{
+  --bg:#0f1220;
+  --card:#1b1f3b;
+  --accent:#7dd3fc;
+  --text:#e5e7eb;
+}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC";}
+body{
+  margin:0;
+  background:linear-gradient(160deg,#0f1220,#111827);
+  color:var(--text);
+}
+header{
+  padding:24px;
+  text-align:center;
+}
+header h1{
+  margin:0;
+  font-size:28px;
+}
+header p{
+  opacity:.8;
+}
+
+.container{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  padding:20px;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:16px;
+}
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:16px;
+  cursor:pointer;
+  transition:.25s;
+  border:1px solid transparent;
+}
+.card:hover{
+  transform:translateY(-4px);
+  border-color:var(--accent);
+}
+.card.active{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(125,211,252,.3);
+}
+.card h3{
+  margin:0 0 6px;
+  font-size:16px;
+}
+.card small{
+  opacity:.7;
+}
+
+.panel{
+  background:rgba(255,255,255,.04);
+  border-radius:16px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+}
+.panel textarea{
+  width:100%;
+  height:80px;
+  border-radius:10px;
+  border:none;
+  padding:12px;
+  resize:none;
+  margin-bottom:12px;
+}
+.panel button{
+  background:var(--accent);
+  color:#000;
+  border:none;
+  border-radius:10px;
+  padding:12px;
+  font-size:15px;
+  cursor:pointer;
+}
+.responses{
+  margin-top:16px;
+  overflow-y:auto;
+}
+.response{
+  background:#0b1028;
+  border-left:4px solid var(--accent);
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:8px;
+}
+.response strong{
+  display:block;
+  margin-bottom:6px;
+}
+footer{
+  text-align:center;
+  opacity:.5;
+  padding:16px;
+  font-size:13px;
+}
+@media(max-width:800px){
+  .container{grid-template-columns:1fr;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>七個 AI 角色召喚器</h1>
+  <p>選擇角色，輸入問題，比較不同世界的回答</p>
+</header>
+
+<div class="container">
+  <div class="cards" id="cards"></div>
+
+  <div class="panel">
+    <textarea id="question" placeholder="輸入你現在卡住的問題…"></textarea>
+    <button onclick="summon()">召喚選中的角色</button>
+    <div class="responses" id="responses"></div>
+  </div>
+</div>
+
+<footer>
+  G4460 數位自造者｜多媒體小說互動裝置
+</footer>
+
+<script>
+const roles=[
+  {name:"瘋狂物理家",hint:"混亂、熵、系統"},
+  {name:"時間魔法師",hint:"過去與未來"},
+  {name:"詩人工程師",hint:"邏輯與情感"},
+  {name:"空間建築師",hint:"結構與位置"},
+  {name:"女巫",hint:"直覺與感受"},
+  {name:"策展人",hint:"觀看與詮釋"},
+  {name:"修補者",hint:"裂縫與連結"}
+];
+
+const styleReply={
+  "瘋狂物理家":q=>"別急著控制。先承認混亂，數據會在之後出現。",
+  "時間魔法師":q=>"你現在的困惑，未來會理解它的必要。",
+  "詩人工程師":q=>"也許你要的不是答案，而是一句能繼續走下去的話。",
+  "空間建築師":q=>"換一個位置看，你會發現出口一直都在。",
+  "女巫":q=>"你其實已經知道答案，只是不敢相信。",
+  "策展人":q=>"這個問題本身，就是一件作品。",
+  "修補者":q=>"裂縫不是錯，它是讓世界重新連接的地方。"
+};
+
+const cardsEl=document.getElementById("cards");
+roles.forEach(r=>{
+  const d=document.createElement("div");
+  d.className="card";
+  d.innerHTML=`<h3>${r.name}</h3><small>${r.hint}</small>`;
+  d.onclick=()=>d.classList.toggle("active");
+  cardsEl.appendChild(d);
+});
+
+function summon(){
+  const q=document.getElementById("question").value.trim();
+  if(!q) return alert("請先輸入問題");
+  document.querySelectorAll(".card.active").forEach(c=>{
+    const name=c.querySelector("h3").innerText;
+    const box=document.createElement("div");
+    box.className="response";
+    box.innerHTML=`<strong>${name}</strong>${styleReply[name](q)}`;
+    document.getElementById("responses").appendChild(box);
+  });
+}
+</script>
+
+</body>
+</html>
